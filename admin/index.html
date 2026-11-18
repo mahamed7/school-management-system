@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - School Management System</title>
+    <script src="../js/data-manager.js"></script>
+    <link rel="stylesheet" href="../assets/css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Route guard: only a signed-in admin may see this page -->
+    <script>DataManager.requireRole('admin');</script>
+
+    <div class="dashboard-container">
+        <!-- Header -->
+        <header class="dashboard-header">
+            <div class="header-left">
+                <h1>
+                    <i class="fas fa-users-cog"></i>
+                    Admin Dashboard
+                </h1>
+            </div>
+            <div class="user-info">
+                <span id="adminName">Loading...</span>
+                <button class="logout-btn" id="logoutBtn">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </button>
+            </div>
+        </header>
+
+        <!-- Navigation -->
+        <nav class="dashboard-nav">
+            <div class="nav-tabs">
+                <button class="tab-btn active" data-tab="overview">
+                    <i class="fas fa-tachometer-alt"></i> Overview
+                </button>
+                <button class="tab-btn" data-tab="users">
+                    <i class="fas fa-users"></i> Manage Users
+                </button>
+                <button class="tab-btn" data-tab="announcements">
+                    <i class="fas fa-bullhorn"></i> Announcements
+                </button>
+                <button class="tab-btn" data-tab="assignments">
+                    <i class="fas fa-tasks"></i> Assignments
+                </button>
+                <button class="tab-btn" data-tab="reports">
+                    <i class="fas fa-chart-bar"></i> Reports
+                </button>
+            </div>
+        </nav>
+
+        <!-- Content Area -->
+        <main class="dashboard-content">
+            <!-- Overview Tab -->
+            <div id="overview" class="tab-content active">
+                <h2><i class="fas fa-tachometer-alt"></i> System Overview</h2>
+                
+                <!-- Statistics Cards -->
+                <div class="cards-grid">
+                    <div class="card">
+                        <div class="card-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <h3>Total Users</h3>
+                        <div class="card-value" id="totalUsers">0</div>
+                        <p>Registered in system</p>
+                    </div>
+                    
+                    <div class="card">
+                        <div class="card-icon">
+                            <i class="fas fa-user-graduate"></i>
+                        </div>
+                        <h3>Students</h3>
+                        <div class="card-value" id="totalStudents">0</div>
+                        <p>Active students</p>
+                    </div>
+                    
+                    <div class="card">
+                        <div class="card-icon">
+                            <i class="fas fa-chalkboard-teacher"></i>
+                        </div>
+                        <h3>Teachers</h3>
+                        <div class="card-value" id="totalTeachers">0</div>
+                        <p>Teaching staff</p>
+                    </div>
+                    
+                    <div class="card">
+                        <div class="card-icon">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                        <h3>System Status</h3>
+                        <div class="card-value" style="color: #27ae60;">Online</div>
+                        <p>All systems operational</p>
+                    </div>
+                </div>
+
+                <!-- Recent Activity -->
+                <div class="card mt-20">
+                    <h3><i class="fas fa-history"></i> Recent Activity</h3>
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Time</th>
+                                <th>User</th>
+                                <th>Activity</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="activityTable">
+                            <tr>
+                                <td>Just now</td>
+                                <td>You</td>
+                                <td>Logged in</td>
+                                <td><span class="text-success">Success</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Users Tab -->
+            <div id="users" class="tab-content">
+                <div class="tab-header">
+                    <h2><i class="fas fa-users"></i> User Management</h2>
+                    <button class="btn btn-primary" id="addUserBtn">
+                        <i class="fas fa-user-plus"></i> Add User
+                    </button>
+                </div>
+
+                <!-- Users Table -->
+                <div class="card">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Username</th>
+                                <th>Name</th>
+                                <th>Role</th>
+                                <th>Email</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="usersTable">
+                            <!-- Users will be loaded here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Announcements Tab -->
+            <div id="announcements" class="tab-content">
+                <div class="tab-header">
+                    <h2><i class="fas fa-bullhorn"></i> Announcements</h2>
+                    <button class="btn btn-primary" id="createAnnouncementBtn">
+                        <i class="fas fa-plus"></i> Create Announcement
+                    </button>
+                </div>
+
+                <!-- Announcements List -->
+                <div class="cards-grid" id="announcementsList">
+                    <!-- Announcements will be loaded here -->
+                </div>
+            </div>
+
+            <!-- Assignments Tab -->
+            <div id="assignments" class="tab-content">
+                <h2><i class="fas fa-tasks"></i> Assignments Overview</h2>
+                
+                <div class="card">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Title</th>
+                                <th>Subject</th>
+                                <th>Teacher</th>
+                                <th>Due Date</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="assignmentsTable">
+                            <!-- Assignments will be loaded here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Reports Tab -->
+            <div id="reports" class="tab-content">
+                <h2><i class="fas fa-chart-bar"></i> System Reports</h2>
+                
+                <div class="cards-grid">
+                    <div class="card">
+                        <div class="card-icon">
+                            <i class="fas fa-download"></i>
+                        </div>
+                        <h3>Export Data</h3>
+                        <p>Export all system data as JSON</p>
+                        <button class="btn btn-primary mt-20" id="exportBtn">
+                            <i class="fas fa-download"></i> Export JSON
+                        </button>
+                    </div>
+                    
+                    <div class="card">
+                        <div class="card-icon">
+                            <i class="fas fa-chart-pie"></i>
+                        </div>
+                        <h3>Statistics</h3>
+                        <p>View detailed system statistics</p>
+                        <button class="btn btn-primary mt-20" id="statsBtn">
+                            <i class="fas fa-chart-bar"></i> View Stats
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="dashboard-footer p-20">
+            <p><i class="fas fa-info-circle"></i> School Management System | Admin Panel</p>
+            <p>Session active | <span id="sessionTimer">30:00</span> remaining</p>
+        </footer>
+    </div>
+
+    <!-- Modals -->
+    <div id="addUserModal" class="modal hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-user-plus"></i> Add New User</h3>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="addUserForm">
+                    <div class="form-row">
+                        <div class="form-control">
+                            <label for="newUsername">Username *</label>
+                            <input type="text" id="newUsername" required>
+                        </div>
+                        <div class="form-control">
+                            <label for="newRole">Role *</label>
+                            <select id="newRole" required>
+                                <option value="">Select Role</option>
+                                <option value="admin">Admin</option>
+                                <option value="teacher">Teacher</option>
+                                <option value="student">Student</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-control">
+                        <label for="newName">Full Name *</label>
+                        <input type="text" id="newName" required>
+                    </div>
+                    <div class="form-control">
+                        <label for="newEmail">Email</label>
+                        <input type="email" id="newEmail">
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary">Add User</button>
+                        <button type="button" class="btn btn-secondary modal-close">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div id="announcementModal" class="modal hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-bullhorn"></i> Create Announcement</h3>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="announcementForm">
+                    <div class="form-control">
+                        <label for="annTitle">Title *</label>
+                        <input type="text" id="annTitle" required>
+                    </div>
+                    <div class="form-control">
+                        <label for="annContent">Content *</label>
+                        <textarea id="annContent" rows="4" required></textarea>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-control">
+                            <label for="annPriority">Priority</label>
+                            <select id="annPriority">
+                                <option value="low">Low</option>
+                                <option value="medium" selected>Medium</option>
+                                <option value="high">High</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary">Publish</button>
+                        <button type="button" class="btn btn-secondary modal-close">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="admin.js"></script>
+</body>
+</html>

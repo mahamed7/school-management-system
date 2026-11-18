@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teacher Dashboard - School Management System</title>
+    <script src="../js/data-manager.js"></script>
+    <link rel="stylesheet" href="../assets/css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Route guard: only a signed-in teacher may see this page -->
+    <script>DataManager.requireRole('teacher');</script>
+
+    <div class="dashboard-container">
+        <!-- Header -->
+        <header class="dashboard-header">
+            <div class="header-left">
+                <h1>
+                    <i class="fas fa-chalkboard-teacher"></i>
+                    Teacher Dashboard
+                </h1>
+            </div>
+            <div class="user-info">
+                <span id="teacherName">Loading...</span>
+                <button class="logout-btn" id="logoutBtn">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </button>
+            </div>
+        </header>
+
+        <!-- Navigation -->
+        <nav class="dashboard-nav">
+            <div class="nav-tabs">
+                <button class="tab-btn active" data-tab="overview">
+                    <i class="fas fa-tachometer-alt"></i> Overview
+                </button>
+                <button class="tab-btn" data-tab="students">
+                    <i class="fas fa-user-graduate"></i> My Students
+                </button>
+                <button class="tab-btn" data-tab="assignments">
+                    <i class="fas fa-tasks"></i> Assignments
+                </button>
+                <button class="tab-btn" data-tab="grades">
+                    <i class="fas fa-graduation-cap"></i> Grades
+                </button>
+            </div>
+        </nav>
+
+        <!-- Content -->
+        <main class="dashboard-content">
+            <!-- Overview -->
+            <div id="overview" class="tab-content active">
+                <h2><i class="fas fa-tachometer-alt"></i> Teacher Overview</h2>
+                
+                <div class="cards-grid">
+                    <div class="card">
+                        <div class="card-icon">
+                            <i class="fas fa-user-graduate"></i>
+                        </div>
+                        <h3>My Students</h3>
+                        <div class="card-value" id="studentCount">0</div>
+                        <p>Students in my class</p>
+                    </div>
+                    
+                    <div class="card">
+                        <div class="card-icon">
+                            <i class="fas fa-tasks"></i>
+                        </div>
+                        <h3>Assignments</h3>
+                        <div class="card-value" id="assignmentCount">0</div>
+                        <p>Active assignments</p>
+                    </div>
+                    
+                    <div class="card">
+                        <div class="card-icon">
+                            <i class="fas fa-chalkboard"></i>
+                        </div>
+                        <h3>Subject</h3>
+                        <div class="card-value">Mathematics</div>
+                        <p>Teaching subject</p>
+                    </div>
+                </div>
+                
+                <!-- Quick Actions -->
+                <div class="card mt-20">
+                    <h3><i class="fas fa-bolt"></i> Quick Actions</h3>
+                    <div class="form-row">
+                        <button class="btn" onclick="createAssignment()">
+                            <i class="fas fa-plus"></i> Create Assignment
+                        </button>
+                        <button class="btn" onclick="takeAttendance()">
+                            <i class="fas fa-clipboard-check"></i> Take Attendance
+                        </button>
+                        <button class="btn" onclick="sendAnnouncement()">
+                            <i class="fas fa-bullhorn"></i> Send Announcement
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Students -->
+            <div id="students" class="tab-content">
+                <h2><i class="fas fa-user-graduate"></i> My Students</h2>
+                
+                <div class="card">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Name</th>
+                                <th>Grade</th>
+                                <th>Email</th>
+                                <th>Attendance</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="studentsTable">
+                            <!-- Students will be loaded here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Assignments -->
+            <div id="assignments" class="tab-content">
+                <div class="tab-header">
+                    <h2><i class="fas fa-tasks"></i> Assignments</h2>
+                    <button class="btn btn-primary" onclick="createAssignment()">
+                        <i class="fas fa-plus"></i> New Assignment
+                    </button>
+                </div>
+                
+                <div class="cards-grid" id="assignmentsList">
+                    <!-- Assignments will be loaded here -->
+                </div>
+            </div>
+
+            <!-- Grades -->
+            <div id="grades" class="tab-content">
+                <h2><i class="fas fa-graduation-cap"></i> Grade Management</h2>
+                
+                <div class="card">
+                    <div class="form-row">
+                        <div class="form-control">
+                            <label>Select Student</label>
+                            <select id="gradeStudent">
+                                <option value="">Choose student</option>
+                            </select>
+                        </div>
+                        <div class="form-control">
+                            <label>Grade</label>
+                            <select id="gradeValue">
+                                <option value="A">A (90-100)</option>
+                                <option value="B">B (80-89)</option>
+                                <option value="C">C (70-79)</option>
+                                <option value="D">D (60-69)</option>
+                                <option value="F">F (Below 60)</option>
+                            </select>
+                        </div>
+                    </div>
+                    <button class="btn btn-primary" onclick="assignGrade()">
+                        <i class="fas fa-save"></i> Assign Grade
+                    </button>
+                </div>
+                
+                <div class="card mt-20">
+                    <h3>Grade Distribution</h3>
+                    <div id="gradeChart" class="mt-20">
+                        <!-- Grade chart will be shown here -->
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <footer class="dashboard-footer p-20">
+            <p><i class="fas fa-chalkboard-teacher"></i> Teacher Portal | School Management System</p>
+        </footer>
+    </div>
+
+    <!-- Attendance register -->
+    <div id="attendanceModal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="attendanceTitle">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="attendanceTitle"><i class="fas fa-clipboard-check"></i> Take Attendance</h3>
+                <button type="button" class="modal-close" aria-label="Close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="attendance-toolbar">
+                    <div class="form-group" style="margin:0">
+                        <label for="attendanceDate">Date</label>
+                        <input type="date" id="attendanceDate">
+                    </div>
+                    <button type="button" class="btn btn-sm" id="markAllPresent">
+                        <i class="fas fa-check-double"></i> Mark all present
+                    </button>
+                </div>
+                <ul class="attendance-list" id="attendanceList"></ul>
+                <p class="attendance-summary" id="attendanceSummary"></p>
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-secondary modal-close">Cancel</button>
+                    <button type="button" class="btn btn-primary" id="saveAttendance">
+                        <i class="fas fa-save"></i> Save attendance
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="teacher.js"></script>
+</body>
+</html>

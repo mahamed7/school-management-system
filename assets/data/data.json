@@ -1,0 +1,88 @@
+{
+  "system": {
+    "name": "School Management System",
+    "version": "2.0",
+    "academicYear": "2024"
+  },
+  "users": [
+    {
+      "id": 1,
+      "username": "admin",
+      "password": "admin123",
+      "role": "admin",
+      "name": "Principal Johnson",
+      "email": "admin@school.edu",
+      "createdAt": "2024-01-01",
+      "status": "active"
+    },
+    {
+      "id": 2,
+      "username": "teacher",
+      "password": "teacher123",
+      "role": "teacher",
+      "name": "Mr. Robert Smith",
+      "email": "teacher@school.edu",
+      "subject": "Mathematics",
+      "students": [101, 102, 103],
+      "status": "active"
+    },
+    {
+      "id": 3,
+      "username": "student",
+      "password": "student123",
+      "role": "student",
+      "name": "Alice Johnson",
+      "email": "student@school.edu",
+      "studentId": 101,
+      "grade": "10th Grade",
+      "subjects": ["Mathematics", "Science", "English"],
+      "status": "active"
+    }
+  ],
+  "students": [
+    {
+      "id": 101,
+      "name": "Alice Johnson",
+      "grade": "10th Grade",
+      "email": "alice@school.edu",
+      "attendance": 95
+    },
+    {
+      "id": 102,
+      "name": "Bob Williams",
+      "grade": "10th Grade",
+      "email": "bob@school.edu",
+      "attendance": 88
+    }
+  ],
+  "teachers": [
+    {
+      "id": 201,
+      "name": "Mr. Robert Smith",
+      "subject": "Mathematics",
+      "email": "smith@school.edu",
+      "experience": "5 years"
+    }
+  ],
+  "announcements": [
+    {
+      "id": 1,
+      "title": "Mid-term Exams",
+      "content": "Mid-term exams will begin next week. Please check the schedule.",
+      "date": "2024-03-15",
+      "author": "Admin",
+      "priority": "high"
+    }
+  ],
+  "assignments": [
+    {
+      "id": 1,
+      "title": "Mathematics Homework",
+      "description": "Complete exercises 1-10 from Chapter 5",
+      "subject": "Mathematics",
+      "teacher": "Mr. Robert Smith",
+      "dueDate": "2024-03-20",
+      "status": "active"
+    }
+  ]
+}

@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Dashboard - School Management System</title>
+    <script src="../js/data-manager.js"></script>
+    <link rel="stylesheet" href="../assets/css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Route guard: only a signed-in student may see this page -->
+    <script>DataManager.requireRole('student');</script>
+
+    <div class="dashboard-container">
+        <!-- Header -->
+        <header class="dashboard-header">
+            <div class="header-left">
+                <h1>
+                    <i class="fas fa-user-graduate"></i>
+                    Student Dashboard
+                </h1>
+            </div>
+            <div class="user-info">
+                <span id="studentName">Loading...</span>
+                <button class="logout-btn" id="logoutBtn">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </button>
+            </div>
+        </header>
+
+        <!-- Navigation -->
+        <nav class="dashboard-nav">
+            <div class="nav-tabs">
+                <button class="tab-btn active" data-tab="overview">
+                    <i class="fas fa-home"></i> Overview
+                </button>
+                <button class="tab-btn" data-tab="grades">
+                    <i class="fas fa-graduation-cap"></i> My Grades
+                </button>
+                <button class="tab-btn" data-tab="assignments">
+                    <i class="fas fa-tasks"></i> Assignments
+                </button>
+                <button class="tab-btn" data-tab="schedule">
+                    <i class="fas fa-calendar"></i> Schedule
+                </button>
+            </div>
+        </nav>
+
+        <!-- Content -->
+        <main class="dashboard-content">
+            <!-- Overview -->
+            <div id="overview" class="tab-content active">
+                <h2><i class="fas fa-home"></i> Student Overview</h2>
+                
+                <div class="cards-grid">
+                    <div class="card">
+                        <div class="card-icon">
+                            <i class="fas fa-graduation-cap"></i>
+                        </div>
+                        <h3>GPA</h3>
+                        <div class="card-value" id="studentGPA">3.75</div>
+                        <p>Current Grade Point Average</p>
+                    </div>
+                    
+                    <div class="card">
+                        <div class="card-icon">
+                            <i class="fas fa-calendar-check"></i>
+                        </div>
+                        <h3>Attendance</h3>
+                        <div class="card-value" id="attendanceRate">95%</div>
+                        <p>Overall attendance</p>
+                    </div>
+                    
+                    <div class="card">
+                        <div class="card-icon">
+                            <i class="fas fa-book"></i>
+                        </div>
+                        <h3>Subjects</h3>
+                        <div class="card-value" id="subjectCount">5</div>
+                        <p>Enrolled subjects</p>
+                    </div>
+                    
+                    <div class="card">
+                        <div class="card-icon">
+                            <i class="fas fa-tasks"></i>
+                        </div>
+                        <h3>Assignments</h3>
+                        <div class="card-value" id="pendingAssignments">3</div>
+                        <p>Pending submissions</p>
+                    </div>
+                </div>
+                
+                <!-- Announcements -->
+                <div class="card mt-20">
+                    <h3><i class="fas fa-bullhorn"></i> Recent Announcements</h3>
+                    <div id="announcementsList" class="mt-20">
+                        <!-- Announcements will be loaded here -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Grades -->
+            <div id="grades" class="tab-content">
+                <h2><i class="fas fa-graduation-cap"></i> My Grades</h2>
+                
+                <div class="card">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Subject</th>
+                                <th>Teacher</th>
+                                <th>Grade</th>
+                                <th>Percentage</th>
+                                <th>Comments</th>
+                            </tr>
+                        </thead>
+                        <tbody id="gradesTable">
+                            <!-- Grades will be loaded here -->
+                        </tbody>
+                    </table>
+                </div>
+                
+                <!-- GPA Calculator -->
+                <div class="card mt-20">
+                    <h3><i class="fas fa-calculator"></i> GPA Calculator</h3>
+                    <div class="form-row">
+                        <div class="form-control">
+                            <label>Add Grade</label>
+                            <select id="newGrade">
+                                <option value="4.0">A (4.0)</option>
+                                <option value="3.7">A- (3.7)</option>
+                                <option value="3.3">B+ (3.3)</option>
+                                <option value="3.0">B (3.0)</option>
+                                <option value="2.7">B- (2.7)</option>
+                                <option value="2.3">C+ (2.3)</option>
+                                <option value="2.0">C (2.0)</option>
+                            </select>
+                        </div>
+                    </div>
+                    <button class="btn btn-primary" onclick="addGradeToCalculator()">
+                        <i class="fas fa-plus"></i> Add to Calculator
+                    </button>
+                    <div id="gpaResult" class="mt-20" style="font-size: 18px; font-weight: bold;"></div>
+                </div>
+            </div>
+
+            <!-- Assignments -->
+            <div id="assignments" class="tab-content">
+                <h2><i class="fas fa-tasks"></i> My Assignments</h2>
+                
+                <div class="cards-grid" id="assignmentsList">
+                    <!-- Assignments will be loaded here -->
+                </div>
+            </div>
+
+            <!-- Schedule -->
+            <div id="schedule" class="tab-content">
+                <h2><i class="fas fa-calendar"></i> Weekly Schedule</h2>
+                
+                <div class="card">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Day</th>
+                                <th>Time</th>
+                                <th>Subject</th>
+                                <th>Room</th>
+                                <th>Teacher</th>
+                            </tr>
+                        </thead>
+                        <tbody id="scheduleTable">
+                            <!-- Schedule will be loaded here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+
+        <footer class="dashboard-footer p-20">
+            <p><i class="fas fa-user-graduate"></i> Student Portal | School Management System</p>
+        </footer>
+    </div>
+
+    <script src="student.js"></script>
+</body>
+</html>
